@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { SajuInput, GeneratedSet, ExtendedSaju } from './types';
+import type { SajuInput, GeneratedSet } from './types';
 import type { SajuResult, ZiweiChart, NatalChart } from '@orrery/core';
 import { calculateSaju, createChart, calculateNatal } from '@orrery/core';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import Header from './components/Header';
 import type { TabId } from './components/Header';
 import AdBanner from './components/AdBanner';
-import SajuInputSection from './components/SajuInputSection';
+
 import LottoResultSection from './components/LottoResultSection';
 import VerificationSection from './components/VerificationSection';
 import HistorySection from './components/HistorySection';
@@ -40,8 +40,8 @@ function copyToClipboard(text: string) {
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabId>('lotto');
-  const [saju, setSaju] = useLocalStorage<SajuInput>('destiny-saju', EMPTY_SAJU);
-  const [extendedSaju, setExtendedSaju] = useLocalStorage<ExtendedSaju | null>('destiny-extended', null);
+  const [saju] = useLocalStorage<SajuInput>('destiny-saju', EMPTY_SAJU);
+  const [extendedSaju] = useLocalStorage<ExtendedSaju | null>('destiny-extended', null);
   const [generatedSets, setGeneratedSets] = useState<GeneratedSet[]>([]);
   const [history, setHistory] = useLocalStorage<GeneratedSet[]>('destiny-history', []);
   const [triggerVerify, setTriggerVerify] = useState(0);
@@ -198,14 +198,6 @@ function App() {
                 사주팔자의 오행으로 찾는 나만의 로또 번호
               </p>
             </div>
-
-            {/* S-01: 사주 입력 & 오행 분석 */}
-            <SajuInputSection
-              saju={saju}
-              onSajuChange={setSaju}
-              extendedSaju={extendedSaju}
-              onExtendedSajuChange={setExtendedSaju}
-            />
 
             <AdBanner type="inline" />
 
