@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { SajuInput, GeneratedSet } from './types';
+import type { SajuInput, GeneratedSet, ExtendedSaju } from './types';
 import type { SajuResult, ZiweiChart, NatalChart } from '@orrery/core';
 import { calculateSaju, createChart, calculateNatal } from '@orrery/core';
 import { useLocalStorage } from './hooks/useLocalStorage';
