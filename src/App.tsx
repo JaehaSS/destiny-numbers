@@ -3,6 +3,7 @@ import type { SajuInput, GeneratedSet, ExtendedSaju } from './types';
 import type { SajuResult, ZiweiChart, NatalChart } from '@orrery/core';
 import { calculateSaju, createChart, calculateNatal } from '@orrery/core';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { CHEONGAN_LIST, JIJI_LIST } from './utils/saju';
 import Header from './components/Header';
 import type { TabId } from './components/Header';
 import AdBanner from './components/AdBanner';
@@ -40,7 +41,7 @@ function copyToClipboard(text: string) {
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabId>('lotto');
-  const [saju] = useLocalStorage<SajuInput>('destiny-saju', EMPTY_SAJU);
+  const [saju, setSaju] = useLocalStorage<SajuInput>('destiny-saju', EMPTY_SAJU);
   const [extendedSaju] = useLocalStorage<ExtendedSaju | null>('destiny-extended', null);
   const [generatedSets, setGeneratedSets] = useState<GeneratedSet[]>([]);
   const [history, setHistory] = useLocalStorage<GeneratedSet[]>('destiny-history', []);
@@ -71,6 +72,18 @@ function App() {
         gender: data.gender,
       });
       setSajuResult(sr);
+
+      // @orrery/core 결과 → 기존 SajuInput 자동 매핑 (로또 로직 연동)
+      const pillarNames = ['year', 'month', 'day', 'hour'] as const;
+      const mapped: SajuInput = { ...EMPTY_SAJU };
+      sr.pillars.forEach((p: { pillar: { stem: string; branch: string } }, i: number) => {
+        const stem = CHEONGAN_LIST.find(c => c.hanja === p.pillar.stem);
+        const branch = JIJI_LIST.find(j => j.hanja === p.pillar.branch);
+        if (stem && branch) {
+          mapped[pillarNames[i]] = { cheongan: stem.name, jiji: branch.name };
+        }
+      });
+      setSaju(mapped);
     } catch (e) {
       console.error('Saju calculation error:', e);
       setSajuResult(null);
