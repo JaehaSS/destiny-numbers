@@ -10,10 +10,11 @@ interface LottoResultSectionProps {
   onGenerate: (sets: GeneratedSet[]) => void;
   generatedSets: GeneratedSet[];
   onStartVerify: () => void;
+  setCount: number;
+  onSetCountChange: (count: number) => void;
 }
 
-export default function LottoResultSection({ saju, extendedSaju, onGenerate, generatedSets, onStartVerify }: LottoResultSectionProps) {
-  const [setCount, setSetCount] = useState(1);
+export default function LottoResultSection({ saju, extendedSaju, onGenerate, generatedSets, onStartVerify, setCount, onSetCountChange }: LottoResultSectionProps) {
   const [animating, setAnimating] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
 
@@ -58,7 +59,7 @@ export default function LottoResultSection({ saju, extendedSaju, onGenerate, gen
             {[1, 2, 3, 4, 5].map(n => (
               <button
                 key={n}
-                onClick={() => setSetCount(n)}
+                onClick={() => onSetCountChange(n)}
                 className={`w-8 h-8 rounded-lg text-sm font-bold transition-all cursor-pointer ${
                   setCount === n
                     ? 'bg-gold text-dark-bg'

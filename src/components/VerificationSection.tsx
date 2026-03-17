@@ -8,6 +8,7 @@ interface VerificationSectionProps {
   saju: SajuInput;
   extendedSaju: ExtendedSaju | null;
   triggerVerify: number; // 변경될 때마다 검증 실행
+  setCount: number;
 }
 
 const RANK_LABELS: Record<number, { label: string; color: string; emoji: string }> = {
@@ -18,7 +19,7 @@ const RANK_LABELS: Record<number, { label: string; color: string; emoji: string 
   5: { label: '5등', color: 'text-green-400', emoji: '✅' },
 };
 
-export default function VerificationSection({ saju, extendedSaju, triggerVerify }: VerificationSectionProps) {
+export default function VerificationSection({ saju, extendedSaju, triggerVerify, setCount }: VerificationSectionProps) {
   const [result, setResult] = useState<SajuVerificationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -41,7 +42,7 @@ export default function VerificationSection({ saju, extendedSaju, triggerVerify 
 
     // 약간의 딜레이 후 검증 실행 (UI 반응성)
     setTimeout(() => {
-      const res = verifySajuBased(saju, extendedSaju);
+      const res = verifySajuBased(saju, extendedSaju, undefined, setCount);
       clearInterval(interval);
       setProgress(100);
       setTimeout(() => {

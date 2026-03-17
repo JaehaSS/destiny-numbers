@@ -45,6 +45,7 @@ function App() {
   const [generatedSets, setGeneratedSets] = useState<GeneratedSet[]>([]);
   const [history, setHistory] = useLocalStorage<GeneratedSet[]>('destiny-history', []);
   const [triggerVerify, setTriggerVerify] = useState(0);
+  const [setCount, setSetCount] = useState(1);
   const [showConfirmClear, setShowConfirmClear] = useState(false);
 
   // @orrery/core results
@@ -208,6 +209,8 @@ function App() {
               onGenerate={handleGenerate}
               generatedSets={generatedSets}
               onStartVerify={handleStartVerify}
+              setCount={setCount}
+              onSetCountChange={setSetCount}
             />
 
             <AdBanner type="inline" />
@@ -217,6 +220,7 @@ function App() {
               saju={saju}
               extendedSaju={extendedSaju}
               triggerVerify={triggerVerify}
+              setCount={setCount}
             />
           </>
         )}

@@ -111,7 +111,8 @@ export function verifyNumbers(targetNumbers: number[]): VerificationResult {
 export function verifySajuBased(
   saju: SajuInput,
   extended?: ExtendedSaju | null,
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
+  setCount: number = 1
 ): SajuVerificationResult {
   const data = getLottoData();
   const matches: MatchResult[] = [];
@@ -122,12 +123,25 @@ export function verifySajuBased(
   for (let idx = 0; idx < data.length; idx++) {
     const round = data[idx];
 
-    // 해당 회차 날짜로 사주 기반 번호 생성 (결정적)
-    const generated = generateDateAwareLottoNumbers(saju, round.date, extended);
+    // 세트 수만큼 번호 생성, 가장 많이 맞은 세트를 채택
+    let bestSetResult: { generated: number[]; matched: number[]; matchCount: number; bonusMatched: boolean } | null = null;
 
-    const matched = generated.filter(n => round.numbers.includes(n));
-    const matchCount = matched.length;
-    const bonusMatched = generated.includes(round.bonus);
+    for (let s = 0; s < setCount; s++) {
+      // 세트별로 다른 날짜 시드를 사용 (세트 인덱스를 날짜에 추가)
+      const dateWithSet = s === 0 ? round.date : `${round.date}#${s}`;
+      const generated = generateDateAwareLottoNumbers(saju, dateWithSet, extended);
+
+      const matched = generated.filter(n => round.numbers.includes(n));
+      const matchCount = matched.length;
+      const bonusMatched = generated.includes(round.bonus);
+
+      if (!bestSetResult || matchCount > bestSetResult.matchCount ||
+          (matchCount === bestSetResult.matchCount && bonusMatched && !bestSetResult.bonusMatched)) {
+        bestSetResult = { generated, matched, matchCount, bonusMatched };
+      }
+    }
+
+    const { generated, matched, matchCount, bonusMatched } = bestSetResult!;
 
     distribution[matchCount] = (distribution[matchCount] || 0) + 1;
 
