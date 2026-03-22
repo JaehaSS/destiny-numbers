@@ -1,0 +1,20 @@
+{
+  "name": "운명의 번호 - 사주 기반 로또 번호 추천",
+  "short_name": "운명의 번호",
+  "description": "사주팔자 오행 분석으로 나만의 로또 번호를 추천받고, 역대 당첨 시뮬레이션을 확인하세요.",
+  "start_url": "/destiny-numbers/",
+  "scope": "/destiny-numbers/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#0a0a1a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "ko",
+  "categories": ["entertainment", "utilities"]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jaehass.github.io/destiny-numbers/sitemap.xml

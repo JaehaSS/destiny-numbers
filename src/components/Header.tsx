@@ -1,4 +1,4 @@
-export type TabId = 'lotto' | 'saju' | 'ziwei' | 'natal' | 'history';
+export type TabId = 'lotto' | 'saju' | 'ziwei' | 'natal';
 
 interface HeaderProps {
   activeTab: TabId;
@@ -10,7 +10,6 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'saju', label: '사주' },
   { id: 'ziwei', label: '자미두수' },
   { id: 'natal', label: '출생차트' },
-  { id: 'history', label: '이력' },
 ];
 
 export default function Header({ activeTab, onTabChange }: HeaderProps) {

@@ -10,7 +10,6 @@ import AdBanner from './components/AdBanner';
 
 import LottoResultSection from './components/LottoResultSection';
 import VerificationSection from './components/VerificationSection';
-import HistorySection from './components/HistorySection';
 import Footer from './components/Footer';
 import BirthInput from './components/BirthInput';
 import type { BirthData } from './components/BirthInput';
@@ -44,10 +43,8 @@ function App() {
   const [saju, setSaju] = useLocalStorage<SajuInput>('destiny-saju', EMPTY_SAJU);
   const [extendedSaju] = useLocalStorage<ExtendedSaju | null>('destiny-extended', null);
   const [generatedSets, setGeneratedSets] = useState<GeneratedSet[]>([]);
-  const [history, setHistory] = useLocalStorage<GeneratedSet[]>('destiny-history', []);
   const [triggerVerify, setTriggerVerify] = useState(0);
   const [setCount, setSetCount] = useState(1);
-  const [showConfirmClear, setShowConfirmClear] = useState(false);
 
   // @orrery/core results
   const [birthData, setBirthData] = useLocalStorage<BirthData | null>('destiny-birth', null);
@@ -133,12 +130,7 @@ function App() {
 
   const handleGenerate = useCallback((sets: GeneratedSet[]) => {
     setGeneratedSets(sets);
-
-    setHistory(prev => {
-      const updated = [...sets, ...prev];
-      return updated.slice(0, 50);
-    });
-  }, [setHistory]);
+  }, []);
 
   const handleStartVerify = useCallback(() => {
     setTriggerVerify(prev => prev + 1);
@@ -148,19 +140,6 @@ function App() {
       document.getElementById('verification')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   }, []);
-
-  const handleDeleteHistory = useCallback((id: string) => {
-    setHistory(prev => prev.filter(s => s.id !== id));
-  }, [setHistory]);
-
-  const handleClearAll = useCallback(() => {
-    if (!showConfirmClear) {
-      setShowConfirmClear(true);
-      return;
-    }
-    setHistory([]);
-    setShowConfirmClear(false);
-  }, [showConfirmClear, setHistory]);
 
   const handleCopyAll = useCallback(() => {
     const parts: string[] = [];
@@ -183,13 +162,10 @@ function App() {
       <AdBanner type="top" />
 
       <main className="max-w-4xl mx-auto px-4">
-        {/* BirthInput: always shown except on history tab */}
-        {activeTab !== 'history' && (
-          <BirthInput onSubmit={handleBirthSubmit} birthData={birthData} />
-        )}
+        <BirthInput onSubmit={handleBirthSubmit} birthData={birthData} />
 
         {/* Copy All Button */}
-        {activeTab !== 'history' && hasAnyResult && (
+        {hasAnyResult && (
           <div className="flex justify-center mb-4">
             <button
               onClick={handleCopyAll}
@@ -303,42 +279,9 @@ function App() {
           </section>
         )}
 
-        {activeTab === 'history' && (
-          <HistorySection
-            history={history}
-            onStartVerify={handleStartVerify}
-            onDelete={handleDeleteHistory}
-            onClearAll={handleClearAll}
-          />
-        )}
       </main>
 
       <Footer />
-
-      {showConfirmClear && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-dark-card border border-dark-border rounded-2xl p-6 max-w-sm mx-4">
-            <h3 className="text-lg font-bold text-slate-200 mb-2">이력 전체 삭제</h3>
-            <p className="text-sm text-slate-400 mb-6">
-              모든 생성 이력이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.
-            </p>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setShowConfirmClear(false)}
-                className="px-4 py-2 text-sm text-slate-400 border border-dark-border rounded-lg hover:bg-dark-surface transition-colors cursor-pointer"
-              >
-                취소
-              </button>
-              <button
-                onClick={handleClearAll}
-                className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-500 transition-colors cursor-pointer"
-              >
-                전체 삭제
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <AdBanner type="sticky" />
     </div>
