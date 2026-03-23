@@ -6,7 +6,7 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import { CHEONGAN_LIST, JIJI_LIST } from './utils/saju';
 import Header from './components/Header';
 import type { TabId } from './components/Header';
-import AdBanner from './components/AdBanner';
+
 
 import LottoResultSection from './components/LottoResultSection';
 import VerificationSection from './components/VerificationSection';
@@ -159,8 +159,6 @@ function App() {
     <div className="min-h-screen pb-16 md:pb-24">
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <AdBanner type="top" />
-
       <main className="max-w-4xl mx-auto px-4">
         <BirthInput onSubmit={handleBirthSubmit} birthData={birthData} />
 
@@ -189,8 +187,6 @@ function App() {
               </p>
             </div>
 
-            <AdBanner type="inline" />
-
             {/* S-02: 번호 생성 결과 */}
             <LottoResultSection
               saju={saju}
@@ -201,8 +197,6 @@ function App() {
               setCount={setCount}
               onSetCountChange={setSetCount}
             />
-
-            <AdBanner type="inline" />
 
             {/* S-03: 사주 기반 과거 당첨 검증 */}
             <VerificationSection
@@ -283,7 +277,6 @@ function App() {
 
       <Footer />
 
-      <AdBanner type="sticky" />
     </div>
   );
 }

@@ -91,16 +91,3 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-dark-bg); }
 ::-webkit-scrollbar-thumb { background: var(--color-dark-border); border-radius: 3px; }
-
-/* Ad slot */
-.ad-slot {
-  background: linear-gradient(135deg, #1a1a3a 0%, #0f0f2a 100%);
-  border: 1px dashed #2a2a4a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4a4a6a;
-  font-size: 0.75rem;
-  overflow: hidden;
-  position: relative;
-}
